@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Profile - {{request.user}}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  </head>
+  <body>
+    {% include 'blog/navbar.html' %}
+    <div class="user-profile container">
+      <h1 align="center" id="user-login">Profile</h1>
+      <div class="profile-left">
+        <div class="row">
+          <div class="col-6">
+            <table class="table table-hover">
+              <tr>
+                <th scope="row">Username</th>
+                <td>{{ user_form.username | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">First Name</th>
+                <td>{{ user_form.first_name | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Last Name</th>
+                <td>{{ user_form.last_name | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">email</th>
+                <td>{{ user_form.email }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-6">
+            <table class="table table-hover">
+              <tr>
+                <th scope="row">Phone</th>
+                <td>{{ user_profile.phone }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Gender</th>
+                <td>{{ user_profile.gender }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Date of Birth</th>
+                <td>{{ user_profile.birth_date }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <h5>Permanent Address</h5>
+            <table class="table table-hover">
+              <tr>
+                <th scope="row">Street address</th>
+                <td>{{ user_perma_address.street_address | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">City</th>
+                <td>{{ user_perma_address.city | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">State</th>
+                <td>{{ user_perma_address.state | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Pincode</th>
+                <td>{{ user_perma_address.pincode }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Country</th>
+                <td>{{ user_perma_address.country | title }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-6">
+            <h5>Correspondence Address</h5>
+            <table class="table table-hover">
+              <tr>
+                <th scope="row">Street address</th>
+                <td>{{ user_cores_address.street_address | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">City</th>
+                <td>{{ user_cores_address.city | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">State</th>
+                <td>{{ user_cores_address.state | title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Pincode</th>
+                <td>{{ user_cores_address.pincode }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Country</th>
+                <td>{{ user_cores_address.country | title }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="porfile-right">
+        <center>
+        {% if request.user.profile.profile_pic %}
+          <img class="porfile-pic" src="/media/{{pic}}" width="200" height="250" alt="user profile pic">
+        {% else %}
+          {% if request.user.profile.gender == 'male' %}
+            <img src="/media/male.png" width="200" height="250" alt="">
+          {% else %}
+            <img src="/media/female.png" width="200" height="250" alt="">
+          {% endif %}
+        {% endif %}
+        <br><br>
+        <a href="{% url 'accounts:editprofile' %}" class="btn btn-outline-primary mybutton" >Edit Profile</a>
+        <br><br>
+        <a href="{% url 'accounts:deleteaccount' %}" class="btn btn-outline-danger mybutton">Delete Account</a>
+        <br><br><br><br><br>
+      </center>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  </body>
+</html>

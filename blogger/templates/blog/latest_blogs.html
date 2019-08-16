@@ -1,0 +1,5 @@
+<ul>
+  {% for blog in latest_blogs %}
+    <li><a href="{{ blog.get_absolute_url }}">{{ blog.title | title }}</a></li>
+  {% endfor %}
+</ul>

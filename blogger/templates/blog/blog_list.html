@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+  {% block title_block %}Blogger{% endblock %}
+  {% block content %}
+    {% for post in blog_list %}
+      <div class="bd-callout bd-callout-info">
+        <h4><a href="{{post.get_absolute_url}}">{{ post.title|title }}</a></h4>
+        <p>{{ post.body | truncatewords:30 }}</p>
+        <p><code class="highlighter-rouge">- {{ post.author|title }}</code>  published on <code class="highlighter-rouge">{{ post.publish }}</code></p>
+      </div>
+    {% empty %}
+      <div class="alert alert-danger" role="alert">
+        No blog found having search query {{ request.GET.q }}
+      </div>
+    {% endfor %}
+
+    <ul class="pagination">
+      {% if blog_list.has_previous %}
+        <li class="page-item">
+          <a href="?page={{ blog_list.previous_page_number }}" class="page-link">&laquo;</a>
+        </li>
+      {% endif %}
+
+      {% for page in blog_list.paginator.page_range %}
+        {% if blog_list.number == page %}
+          <li class="page-item active">
+            <a href="?page={{ page }}">{{ page }}</a>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a href="?page={{ page }}">{{ page }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+
+      {% if blog_list.has_next %}
+        <li class="page-item">
+          <a href="?page={{ blog_list.next_page_number }}" class="page-link">&raquo;</a>
+        </li>
+      {% endif %}
+    </ul>
+
+  {% endblock %}

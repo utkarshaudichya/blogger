@@ -1,0 +1,58 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+  {% block title_block %}Blogger{% endblock %}
+  {% block content %}
+      <div class="bd-callout bd-callout-warning">
+        <h4 id="post-detail">{{ blog.title|title }}</h4>
+        <p><code class="highlighter-rouge">- {{ blog.author|title }}</code>  published on <code class="highlighter-rouge">{{ blog.publish }}</code></p>
+        <hr>
+        <blockquote class="blockquote">
+          <p class="mb-0">{{ blog.body }}</p>
+        </blockquote>
+
+        <p id="tags">Tags:
+          {% for tag in blog.tags.all %}
+            <a href="{% url 'blog:blog_list_by_tag_name' tag.slug %}">{{tag.name}}</a>
+            <!-- {% if not forloop.last %},{% endif %} -->
+          {% endfor %}
+        </p>
+
+        {{ blog.likes.count }} Like{{ blog.likes.count | pluralize }}
+        <form class="" action="{% url 'blog:like_blog' %}" method="post">
+          {% csrf_token %}
+          {% if is_liked %}
+            <button type="submit" name="blog_id" value="{{ blog.id }}" class="btn btn-danger btn-sm">Unlike</button>
+            &nbsp&nbsp&nbsp&nbsp
+            <a href="{% url 'blog:share_blog' blog.id %}" class="btn btn-info btn-sm">Share Blog</a>
+          {% else %}
+            {% if user.is_authenticated %}
+              <button type="submit" name="blog_id" value="{{ blog.id }}" class="btn btn-success btn-sm">Like</button>
+            {% else %}
+              <a href="{% url 'accounts:login' %}" class="btn btn-success btn-sm">Like</a>
+            {% endif %}
+            &nbsp&nbsp&nbsp&nbsp&nbsp
+            <a href="{% url 'accounts:login' %}" class="btn btn-info btn-sm">Share Blog</a>
+          {% endif %}
+        </form>
+        <br><br>
+        <div class="">
+          <form class="" method="post">
+            {{ comment_form | crispy }}
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+              <input type="submit" class="btn btn-outline-success" value="Comment">
+            {% else %}
+              <input type="submit" class="btn btn-outline-success" value="Comment" disabled>
+            {% endif %}
+          </form>
+          <br>
+          {{ comments.count }} comment{{ comments.count | pluralize }}
+          {% for comment in comments %}
+            <blockquote class="blockquote">
+              <p class="mb-0"><small>{{ comment.body }}</small></p>
+              <footer class="blockquote-footer"><small>by </small><cite title="Source Title"><small>{{ comment.user | title }} on {{ comment.created }}</small></cite></footer>
+            </blockquote>
+          {% endfor %}
+        </div>
+      </div>
+  {% endblock %}

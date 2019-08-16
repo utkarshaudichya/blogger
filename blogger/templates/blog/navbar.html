@@ -1,0 +1,57 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+<div class="container">
+  <a class="navbar-brand" href="{% url 'blog:home' %}">Blogger</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'blog:home' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'blog:create_blog' %}">Write Blog</a>
+      </li>
+
+      <form class="form-inline mr-sm-2 my-2 my-lg-0" action="{% url 'blog:home' %}">
+        <input class="form-control " type="search" placeholder="Search" aria-label="Search" name='q'>
+        &nbsp&nbsp&nbsp&nbsp
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </ul>
+    <ul class="navbar-nav justify-content-end">
+      {% if request.user.is_authenticated %}
+        {% if request.user.profile.profile_pic %}
+          <img src="{{request.user.profile.profile_pic.url}}" alt="" class="rounded-circle" width="40" height="40">
+        {% else %}
+          {% if request.user.profile.gender == 'male' %}
+            <img src="/media/male.png" alt="" class="rounded-circle" width="40" height="40">
+          {% else %}
+            <img src="/media/female.png" alt="" class="rounded-circle" width="40" height="40">
+          {% endif %}
+        {% endif %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Hi {{request.user|title}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'blog:my_blogs' %}">My Blogs</a>
+            <a class="dropdown-item" href="{% url 'accounts:userprofile' %}">Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+          </div>
+        </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+      </li>
+      &nbsp&nbsp&nbsp&nbsp
+      <li class="nav-item">
+        <a role="button" class="btn btn-outline-primary my-2 my-sm-0" href="{% url 'accounts:signup' %}">Signup</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+</nav>
